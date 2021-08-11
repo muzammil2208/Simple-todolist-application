@@ -3,6 +3,7 @@ $background-color-light:white;
 $background-color-dark:rgb(31,31,31);
 $foreground-color-dark:black;
 
+
 *{
     margin:0;
     padding:0;
@@ -129,6 +130,29 @@ body{
     color:$foreground-color-dark;
     box-shadow: 5px 5px 10px rgb(214, 213, 213);
     box-shadow:-5px -5px -10px white;
+
+}
+
+.illustration-container
+{ 
+    width:100%;
+    display:none;
+    flex-direction:column;
+    height: 100%;
+    align-items: center;
+    
+    padding-top:20px;
+    img{
+        width:60%;
+        height: 500px;
+    }
+    .illustration-heading
+    {
+        text-align:center;
+        padding:20px 10px;
+        font-size:2rem;
+        color:rgb(153, 153, 153);
+    }
 
 }
 

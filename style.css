@@ -156,6 +156,32 @@ body {
           box-shadow: -5px -5px -10px white;
 }
 
+.illustration-container {
+  width: 100%;
+  display: none;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  height: 100%;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding-top: 20px;
+}
+
+.illustration-container img {
+  width: 60%;
+  height: 500px;
+}
+
+.illustration-container .illustration-heading {
+  text-align: center;
+  padding: 20px 10px;
+  font-size: 2rem;
+  color: #999999;
+}
+
 @media (max-width: 640px) {
   .main-container {
     width: 80%;
