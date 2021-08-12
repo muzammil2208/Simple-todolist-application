@@ -9,8 +9,7 @@ const progress_status=document.getElementsByClassName('progress-bar-status')[0];
 const todo_input=document.querySelector('.todo-input');
 const toggle_button=document.querySelector('.night-mode-toggle');
 var icon=document.getElementsByTagName('i')[0];
-var night_mode='day';
-localStorage.setItem("night-mode",night_mode);
+
 
 
 
@@ -18,6 +17,10 @@ localStorage.setItem("night-mode",night_mode);
 nightmode.addEventListener('click',nightmode_func);
 
 
+if(localStorage.getItem("night-mode")=="night")
+{
+    nightmode_func();
+}
 
 
 //functions
