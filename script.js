@@ -1,7 +1,6 @@
 //declaration
 const d = new Date();
 const date_heading=document.querySelector('.date');
-const todolist=[{id:1,value:'First task'},{id:2,value:"last task"}];
 const todo=document.getElementsByClassName('todo-content');
 const months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 const date_string=d.getDate()+" "+months[d.getMonth()]+","+d.getFullYear();
@@ -11,12 +10,12 @@ const progress_bar1=document.getElementsByClassName("progress")[0];
 const progress_bar_status=document.getElementsByClassName("progress-bar-status")[0];
 const illustration_container=document.getElementsByClassName('illustration-container')[0];
 date_heading.innerHTML=date_string;
-addtask();
-
+var todolist=JSON.parse(localStorage.todolist);
 
 //event listener
 
-window.addEventListener('load',progress_func);
+window.addEventListener('load',progressFunc);
+window.addEventListener('load',showTask);
 
 
 
@@ -39,118 +38,123 @@ window.addEventListener('load',progress_func);
 
 //functions
 
-function addtask()
+function addTask(value)
 {
-    for(var todos of todolist)
-    {
-        var mode=localStorage.getItem("night-mode");
-        var newTask=document.createElement("div");
-        newTask.setAttribute("class","todo");
-        if(mode=='night')
+    todolist.push({id:todolist.length,value:value,status:"unchecked"});
+    localStorage.todolist=JSON.stringify(todolist);
+    console.log(todolist);
+    showTask();
+}
+
+function showTask()
+{
+    
+    
+        for(let i=todo.length;i<todolist.length;i++)
         {
-        newTask.classList.add("night-todo");
-        
+
+            let todoItem=todolist[i];
+            let mode=localStorage.getItem("night-mode");
+            let status=todolist[i].status;
+            let new_item=document.createElement("div");
+            new_item.classList.add("todo");
+            if(mode=="night"){new_item.classList.add("night-todo")}
+            if(status=="unchecked")
+            {
+                new_item.innerHTML=`<p class="todo-content" onclick="checking(this)">${todoItem.value}</p>
+                <button class="delete-button" id="${todoItem.id}" onclick="deleteTask(this)"><i class="far fa-trash-alt"></i></button>`;
+            }
+            else
+            {
+                new_item.innerHTML=`<p class="todo-content checked" onclick="checking(this)">${todoItem.value}</p>
+                <button class="delete-button" id="${todoItem.id}" onclick="deleteTask(this)"><i class="far fa-trash-alt"></i></button>`
+            }
+            todo_list_container.appendChild(new_item);
+            document.getElementsByClassName("todo-input")[0].value="";
         }
-
-         newTask.innerHTML=`<p class="todo-content" data-checked="unchecked" id="${todos.id}" onclick="checking(this)">${todos.value}</p>
-                         <button class="delete-button" onclick="delete_func(this)"><i class="far fa-trash-alt"></i></button>`;
-        todo_list_container.appendChild(newTask);
-        document.getElementsByClassName("todo-input")[0].value="";
-        progress_func();
-
-    }
-}
-function newTask_func(value)
-{
-    if(todo.length<=0)
-    {
-        illustration_container.style.display="none";
-    }
-    var mode=localStorage.getItem("night-mode");
-    var newTask=document.createElement("div");
-    newTask.setAttribute("class","todo");
-    if(mode=='night')
-    {
-        newTask.classList.add("night-todo");
         
-    }
 
-    newTask.innerHTML=`<p class="todo-content" data-checked="unchecked" onclick="checking(this)">${value}</p>
-                         <button class="delete-button" onclick="delete_func(this)"><i class="far fa-trash-alt"></i></button>`;
-   todo_list_container.appendChild(newTask);
-   document.getElementsByClassName("todo-input")[0].value="";
-   progress_func();
+        //update the progress bar
+        progressFunc();
+       
+
+    
 }
 
-function delete_func(e)
+    
+function deleteTask(element)
 {
-   
-   var parent=e.parentElement;
-   parent.style.opacity="0";
-   parent.remove();
-   progress_func();
-   isEmpty();
-   console.log(todo.length)
+    //DELTEING FROM THE LOCALSTORAGE
+    for(let todoItem of todolist)
+    {
+        if(todoItem.id==element.getAttribute("id"))
+        {
+            todolist.splice(todoItem.id,1);
+            
+        }
+    }
+    //for rearranging the id in order after deletion
+    for(let i=0;i<todolist.length;i++)
+    {
+        todolist[i].id=i;
+    }
+    
+    localStorage.todolist=JSON.stringify(todolist);
+
+    //actually deleting the element
+    element.parentElement.remove();
+
+    //updating the progress func
+    progressFunc();
+
 }
+  
 
 function checking(element)
 {
-    if(element.getAttribute("data-checked")=="unchecked")
-    {
-        element.classList.add("checked");
-        element.setAttribute("data-checked","checked");
-    }
-    else
-    {
-        element.classList.remove("checked");
-        element.setAttribute("data-checked","unchecked");
-    }
-    progress_func();
 
-    
-}
-
-function progress_func()
-{
-
-    var ch=0;
-    var progress_widht=0;
-    if(todo.length>0)
+    //changing the status of element in the local storage and implementing it at the same time
+    for(let todoItem of todolist)
     {
-        for(var todoitem of todo)
+        if(todoItem.value==element.innerText)
         {
-            var checked_attribute=todoitem.getAttribute('data-checked');
-            if(checked_attribute.toUpperCase()=="CHECKED")
+            if(todoItem.status=="checked")
             {
-                ch++;
+                todoItem.status="unchecked";
+                element.classList.remove("checked");
+                
+                localStorage.todolist=JSON.stringify(todolist);
             }
-           
-            
+            else
+            {
+                todoItem.status="checked";
+                element.classList.add("checked");
+                console.log(todolist);
+                localStorage.todolist=JSON.stringify(todolist);
+            }
         }
-       progress_widht =ch/(todo.length)*100;
-
     }
-
-
-    
-        progress_bar1.style.width=progress_widht+"%";
-    
-   
-    
-    progress_bar_status.innerHTML=Math.round(progress_widht)+"%";
-
-   
+    //updating the progress bar
+    progressFunc();
 }
 
-
-function isEmpty()
+function progressFunc()
 {
-    if(todo.length<=0)
+    
+    let count=0;
+    
+    for(let todoItem of todolist)
     {
-        illustration_container.style.display="flex";
+        if(todoItem.status=="checked")
+        {
+            count++;
+        }
     }
-    else
-    {
-        illustration_container.style.display="none";
-    }
+     let width=count/todolist.length*100;
+     console.log(count);
+    
+     console.log(width);
+    progress_bar1.style.width=width+"%";
+    progress_bar_status.innerText=width.toPrecision(3)+"%";
+
 }

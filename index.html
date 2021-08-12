@@ -25,25 +25,14 @@
             <div class="progress-bar">
                 <div class="progress"></div>
             </div>
-            <p class="progress-bar-status">80%</p>
+            <p class="progress-bar-status"></p>
         </section>
 
 
-        <input type="text" class="todo-input" placeholder="Enter your task" onchange="newTask_func(value)">
+        <input type="text" class="todo-input" placeholder="Enter your task" onchange="addTask(value)">
         
         <div class="todo-list-container">
-            <div class="todo" >
-                <p class="todo-content" data-checked="unchecked" onclick="checking(this)">Hello this is new todo</p>
-                <button class="delete-button" onclick="delete_func(this)"><i class="far fa-trash-alt"></i></button>
-            </div>
-            <div class="todo">
-                <p class="todo-content" data-checked="unchecked" onclick="checking(this)">Go to gym</p>
-                <button class="delete-button" onclick="delete_func(this)"><i class="far fa-trash-alt"></i></button>
-            </div>
-            <div class="todo" >
-                <p class="todo-content" data-checked="unchecked" onclick="checking(this)">Learn Javascript</p>
-                <button class="delete-button" onclick="delete_func(this)"><i class="far fa-trash-alt"></i></button>
-            </div>
+            
             <div class="illustration-container">
                 <img src="./assets/todo-illustration.svg" alt="">
                  <p class="illustration-heading">It always seems impossible unitll it's done</p>
