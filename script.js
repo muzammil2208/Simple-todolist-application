@@ -10,7 +10,17 @@ const progress_bar1=document.getElementsByClassName("progress")[0];
 const progress_bar_status=document.getElementsByClassName("progress-bar-status")[0];
 const illustration_container=document.getElementsByClassName('illustration-container')[0];
 date_heading.innerHTML=date_string;
-var todolist=JSON.parse(localStorage.todolist);
+//to initialize the localstorage the first time
+if(localStorage.todolist==undefined||localStorage.todolist=="[]")
+{
+    var todolist=[];
+    illustration_container.style.display="flex";
+}
+else
+{
+    var todolist=JSON.parse(localStorage.todolist);
+}
+
 
 //event listener
 
@@ -44,6 +54,8 @@ function addTask(value)
     localStorage.todolist=JSON.stringify(todolist);
     console.log(todolist);
     showTask();
+    //to remove the illustration 
+    illustration_container.style.display="none";
 }
 
 function showTask()
@@ -104,6 +116,9 @@ function deleteTask(element)
     //actually deleting the element
     element.parentElement.remove();
 
+    //to implement the illustration
+    illustration_func();
+
     //updating the progress func
     progressFunc();
 
@@ -157,4 +172,12 @@ function progressFunc()
     progress_bar1.style.width=width+"%";
     progress_bar_status.innerText=width.toPrecision(3)+"%";
 
+}
+
+function illustration_func()
+{
+    if(todo.length<=0)
+    {
+        illustration_container.style.display="flex";
+    }
 }
