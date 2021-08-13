@@ -169,6 +169,10 @@ function progressFunc()
      console.log(count);
     
      console.log(width);
+     if(isNaN(width))
+     {
+         width=0;
+     }
     progress_bar1.style.width=width+"%";
     progress_bar_status.innerText=width.toPrecision(3)+"%";
 
